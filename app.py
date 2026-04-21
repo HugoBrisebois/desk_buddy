@@ -1,5 +1,6 @@
 from flask import Flask
 import requests
+import json
 
 
 # start up
@@ -9,12 +10,6 @@ import requests
 city = ""
 state = ""
 country = ""
-
-# Requests VARs
-
-limit = 1
-
-r =requests.get(F"http://api.openweathermap.org/geo/1.0/direct?q={city},{state},{country}&limit={limit}&appid={API key}")
 
 
 
@@ -27,6 +22,13 @@ country = input("Please enter the name if your country: ")
 weather_API = ""
 weather_API = input("Please enter your OpenWeather: ")
 
+r =requests.get(F"http://api.openweathermap.org/geo/1.0/direct?q={city},{state},{country}&limit=1&appid={weather_API}")
+response = r.text
+
+lat = ""
+lon = ""
+
+print(response)
 
 
 
