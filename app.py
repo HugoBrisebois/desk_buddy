@@ -29,6 +29,11 @@ lat = ""
 lon = ""
 
 print(response)
+    
+    
+# Store the API data 
+
+print(r.json())
 
 
 
