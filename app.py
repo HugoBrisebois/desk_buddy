@@ -22,20 +22,24 @@ country = input("Please enter the name if your country: ")
 weather_API = ""
 weather_API = input("Please enter your OpenWeather: ")
 
-r =requests.get(F"http://api.openweathermap.org/geo/1.0/direct?q={city},{state},{country}&limit=1&appid={weather_API}")
+r =requests.get(f"http://api.openweathermap.org/geo/1.0/direct?q={city},{state},{country}&limit=1&appid={weather_API}")
 response = r.text
 
 lat = ""
 lon = ""
-
-print(response)
     
     
 # Store the API data 
+response = r
+data = response.json()
+city1 = data[0]
 
-print(r.json())
+if response:
+    lat = print(city1["lat"])
+    lon = print(city1["lon"])
 
-
+print(f"lat: {lat}")
+print(f"log: {lon}")
 
 # setting up the web app 
 app = Flask(__name__)
