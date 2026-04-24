@@ -22,7 +22,7 @@ country = input("Please enter the name if your country: ")
 weather_API = ""
 weather_API = input("Please enter your OpenWeather: ")
 
-r =requests.get(f"http://api.openweathermap.org/geo/1.0/direct?q={city},{state},{country}&limit=1&appid={weather_API}")
+r = requests.get(f"http://api.openweathermap.org/geo/1.0/direct?q={city},{state},{country}&limit=1&appid={weather_API}")
 response = r.text
 
 lat = ""
@@ -35,15 +35,48 @@ data = response.json()
 city1 = data[0]
 
 if response:
-    lat = print(city1["lat"])
-    lon = print(city1["lon"])
+    print(city1["lat"])
+    print(city1["lon"])
+
+    # store the latitudes and longetitudes
+    lon = city1["lon"]
+    lat = city1["lat"]
+    
 
 print(f"lat: {lat}")
 print(f"log: {lon}")
+
+# calling the openweather API to get the temperature
+r1 = requests.get(f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={weather_API}")
+response1 = r1
+data = response1.json()
+city1 = data[0]
+
+if response1:
+    print(city1["lat"])
+    print(city1["lon"])
+
+    # store the latitudes and longetitudes
+    lon = city1["lon"]
+    lat = city1["lat"]
+    
+
+print(f"lat: {lat}")
+print(f"log: {lon}")
+
+# store returned temperature
+if response1:
+    print(temp1["main"])
+
+
 
 # setting up the web app 
 app = Flask(__name__)
 
 @app.route("/")
 def hello_world():
-    return "<p>Hello, World!</p>"
+    return f"""
+    <p>Hello, World!</p>
+    <H4>Temperature</H4>
+    
+    """
