@@ -1,8 +1,7 @@
-import time
+from datetime import datetime
 
 from flask import Flask
 import requests
-import datetime
 
 
 
@@ -13,8 +12,6 @@ def get_location():
     city = ""
     state = ""
     country = ""
-
-
 
     # weather API (OpenWeather API key)
     # get city, state and country info
@@ -30,8 +27,7 @@ def get_location():
 
     lat = ""
     lon = ""
-    
-    
+        
     # Store the API data 
     response = r
     data = response.json()
@@ -47,6 +43,7 @@ def get_location():
 
     return lat, lon, weather_API
 
+
 def get_temp(lat, lon, weather_API):
     # calling the OpenWeather API to get the temperature
     r1 = requests.get(f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={weather_API}")
@@ -58,6 +55,7 @@ def get_temp(lat, lon, weather_API):
 
     print(temp1)
     return temp1
+
 
 def get_weather(lat, lon, weather_API):
     # calling the OpenWeather API to get the temperature
@@ -71,11 +69,20 @@ def get_weather(lat, lon, weather_API):
     print(weather)
     return weather
 
+# get time in a function
+def get_time():
+    time = datetime.now().strftime("%H:%M")
+
+    print(time)
+    return time
+
+
+# getting all the VARs stored with the Parsed returned data to display on the widgets
 lat, lon, weather_API = get_location()
-
 temp1 = get_temp(lat, lon, weather_API)
-
 weather = get_weather(lat,lon, weather_API)
+time = get_time()
+
 # setting up the web app 
 app = Flask(__name__)
 
@@ -90,5 +97,5 @@ def hello_world():
     {weather}
 
     <H4>Time</H4>
-    
+    {time}    
     """
