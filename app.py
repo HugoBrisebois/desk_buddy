@@ -51,7 +51,10 @@ r1 = requests.get(f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lo
 response1 = r1
 data1 = response1.json()
 print(data1)
+
+# weather and temperature VARs for display widgets
 temp1 = data1["main"]["temp"]
+weather = data1["weather"][0]["description"]
 
 print(temp1)
 
@@ -65,5 +68,8 @@ def hello_world():
     return f"""
     <p>Hello, World!</p>
     <H4>Temperature</H4>
-    {temp1 - 273.15, 1}
+    {round(temp1 - 273.15, 1)}
+
+    <H4>Weather</H4>
+    {weather}
     """
