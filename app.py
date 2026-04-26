@@ -48,12 +48,14 @@ def get_location():
     print(f"lat: {lat}")
     print(f"log: {lon}")
 
-# calling the openweather API to get the temperature
-r1 = requests.get(f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={weather_API}")
-response1 = r1
-data1 = response1.json()
-print(data1)
-temp1 = data1["main"]["temp"]
+    return lat, lon, weather_API
+
+def get_temp(lat, lon, weather_API):
+    # calling the OpenWeather API to get the temperature
+    r1 = requests.get(f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={weather_API}")
+    data1 = r1.json()
+    print(data1)
+    temp1 = data1["main"]["temp"]
 
     print(temp1)
     return temp1
@@ -70,5 +72,8 @@ def hello_world():
     return f"""
     <p>Hello, World!</p>
     <H4>Temperature</H4>
-    {temp1 - 273.15, 1}
+    {round(temp1 - 273.15, 1)}
+    
+    <H4>Time</H4>
+    
     """
