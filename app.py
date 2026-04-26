@@ -83,6 +83,8 @@ temp1 = get_temp(lat, lon, weather_API)
 weather = get_weather(lat,lon, weather_API)
 time = get_time()
 
+
+
 # setting up the web app 
 app = Flask(__name__)
 
