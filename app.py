@@ -53,17 +53,29 @@ def get_temp(lat, lon, weather_API):
     data1 = r1.json()
     print(data1)
     
-    # store weather and the temperature in VARs
+    # store the temperature in VARs
     temp1 = data1["main"]["temp"]
-    weather = data1["weather"][0]["description"]
 
     print(temp1)
     return temp1
+
+def get_weather(lat, lon, weather_API):
+    # calling the OpenWeather API to get the temperature
+    r1 = requests.get(f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={weather_API}")
+    data1 = r1.json()
+    print(data1)
+    
+    # store weather in a VAR
+    weather = data1["weather"][0]["description"]
+
+    print(weather)
+    return weather
 
 lat, lon, weather_API = get_location()
 
 temp1 = get_temp(lat, lon, weather_API)
 
+weather = get_weather(lat,lon, weather_API)
 # setting up the web app 
 app = Flask(__name__)
 
@@ -74,6 +86,9 @@ def hello_world():
     <H4>Temperature</H4>
     {round(temp1 - 273.15, 1)}
     
+    <H4>weather</H4>
+    {weather}
+
     <H4>Time</H4>
     
     """
