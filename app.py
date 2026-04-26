@@ -38,9 +38,6 @@ def get_location():
     city1 = data[0]
 
     if response:
-        print(city1["lat"])
-        print(city1["lon"])
-
         # store the latitudes and longetitudes
         lon = city1["lon"]
         lat = city1["lat"]
@@ -55,7 +52,10 @@ def get_temp(lat, lon, weather_API):
     r1 = requests.get(f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={weather_API}")
     data1 = r1.json()
     print(data1)
+    
+    # store weather and the temperature in VARs
     temp1 = data1["main"]["temp"]
+    weather = data1["weather"][0]["description"]
 
     print(temp1)
     return temp1
