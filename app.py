@@ -53,7 +53,7 @@ app = Flask(__name__)
 scheduler = APScheduler()
 
 
-@scheduler.task('interval', id='update_time', seconds=30, misfire_grace_time=900)
+@scheduler.task('interval', id='update_time', seconds=30, misfire_grace_time=30)
 def update_time():
     global current_time
     current_time = datetime.now().strftime("%H:%M")
