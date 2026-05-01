@@ -1,8 +1,9 @@
 from datetime import datetime
-
-from flask import Flask
+from flask_apscheduler import APScheduler
+from flask import Flask, render_template
 import requests
 
+schedueler = APScheduler()
 
 
 def get_location():
@@ -53,7 +54,6 @@ def get_temp(lat, lon, weather_API):
     # store the temperature in VARs
     temp1 = data1["main"]["temp"]
 
-    print(temp1)
     return temp1
 
 
@@ -61,43 +61,34 @@ def get_weather(lat, lon, weather_API):
     # calling the OpenWeather API to get the temperature
     r1 = requests.get(f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={weather_API}")
     data1 = r1.json()
-    print(data1)
     
     # store weather in a VAR
     weather = data1["weather"][0]["description"]
 
-    print(weather)
     return weather
 
 # get time in a function
 def get_time():
-    time = datetime.now().strftime("%H:%M")
+    current_time = datetime.now().strftime("%H:%M")
 
-    print(time)
-    return time
+    print(current_time)
+    return current_time
 
 
 # getting all the VARs stored with the Parsed returned data to display on the widgets
 lat, lon, weather_API = get_location()
 temp1 = get_temp(lat, lon, weather_API)
 weather = get_weather(lat,lon, weather_API)
-time = get_time()
 
 
 
 # setting up the web app 
 app = Flask(__name__)
 
-@app.route("/")
-def hello_world():
-    return f"""
-    <H3>Time</H3>
-    {time}    
-    
-    <H3>Temperature</H3>
-    {round(temp1 - 273.15, 1)}
-    
-    <H3>weather</H3>
-    {weather}
+@app.route('/')
+def index():
+    time1 = get_time()
+    return render_template('index.html', time_of_day=time1)
+        
 
-    """
+

@@ -1,0 +1,12 @@
+body {
+    color: black;
+}
+
+.Time_Widget {
+    width: 500px;
+    text-align: center;
+    font-size: xx-large ;
+    background-color: rgb(233, 219, 193);
+    color: black;
+    border-radius: 10px;
+}
