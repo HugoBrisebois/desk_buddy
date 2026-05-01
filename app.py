@@ -3,7 +3,6 @@ from flask_apscheduler import APScheduler
 from flask import Flask, render_template
 import requests
 
-schedueler = APScheduler()
 
 
 def get_location():
@@ -80,6 +79,10 @@ lat, lon, weather_API = get_location()
 temp1 = get_temp(lat, lon, weather_API)
 weather = get_weather(lat,lon, weather_API)
 
+# Setting up the Schedueler
+schedueler = APScheduler()
+
+@schedueler.task('interval', id='get_time', seconds=30, misfire_grace_time=900)
 
 
 # setting up the web app 
