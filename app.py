@@ -91,13 +91,13 @@ app = Flask(__name__)
 @app.route("/")
 def hello_world():
     return f"""
-    <p>Hello, World!</p>
-    <H4>Temperature</H4>
+    <H3>Time</H3>
+    {time}    
+    
+    <H3>Temperature</H3>
     {round(temp1 - 273.15, 1)}
     
-    <H4>weather</H4>
+    <H3>weather</H3>
     {weather}
 
-    <H4>Time</H4>
-    {time}    
     """
