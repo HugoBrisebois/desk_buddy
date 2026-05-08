@@ -1,31 +1,34 @@
 from datetime import datetime
 from flask_apscheduler import APScheduler
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for
 import requests
 
 # Global time variable updated by the scheduler
 current_time = datetime.now().strftime("%H:%M")
 
+# In-memory config store
+config = {
+    "lat": None,
+    "lon": None,
+    "weather_API": None,
+    "temp": None,
+    "weather": None,
+}
+
 
 def get_location():
-    city = input("Please enter the name of your city: ")
-    state = input("Please enter the name of your state: ")
-    country = input("Please enter the name of your country: ")
-    weather_API = input("Please enter your OpenWeather API key: ")
 
+    # API request URL
     r = requests.get(
         f"http://api.openweathermap.org/geo/1.0/direct"
         f"?q={city},{state},{country}&limit=1&appid={weather_API}"
     )
+
     data = r.json()
+    if not data:
+        return None, None
     city1 = data[0]
-
-    lat = city1["lat"]
-    lon = city1["lon"]
-
-    print(f"lat: {lat}")
-    print(f"lon: {lon}")
-    return lat, lon, weather_API
+    return city1["lat"], city1["lon"]
 
 
 def get_temp(lat, lon, weather_API):
