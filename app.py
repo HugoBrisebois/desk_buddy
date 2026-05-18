@@ -65,14 +65,39 @@ def update_time():
 
 @app.route('/')
 def index():
-    return render_template('index.html', time_of_day=current_time)
+    if config["lat"] is None:
+        return redirect(url_for('setup'))
+    return render_template(
+        'index.html', 
+        time_of_day=current_time
+        temp=config["temp"],
+        weather=config["weather"],
+    )
 
+@app.route('/setup', methods=['GET', 'POST'])
+def setup():
+    error = None
+    if requests.method == 'POST':
+        city = request.form.get('city', '').strip()
+        state = request.form.get('state', '').strip()
+        country = request.form.get('country', '')
+        weather_API = request.form.get('weather_api', '')
+
+        if not all([city, state, country, weather_API]):
+            error = "All fields are required"
+        else:
+            lat, lon = get_location(city, state, country, weather_API)
+            if lat is None:
+                error = "Location not found. check your city, state, country and try again"
+                else:
+                    config["lat"] = lat
+                    config["lon"] = lon
+                    config["weather_API"] = weather_API
+                    config["temp"], config["weather"] = get_weather_data(lat,lon, weather_API)
+                    return redirect(url_for('index'))
+    return render_template('setup.html', error=error)
 
 if __name__ == '__main__':
-    lat, lon, weather_API = get_location()
-    temp1 = get_temp(lat, lon, weather_API)
-    weather = get_weather(lat, lon, weather_API)
-
     scheduler.init_app(app)
     scheduler.start()
     app.run(debug=True)
