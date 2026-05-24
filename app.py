@@ -2,12 +2,12 @@ from datetime import datetime
 from flask_apscheduler import APScheduler
 from flask import Flask, render_template, request, redirect, url_for
 import requests
-
+from typing import Any
 # Global time variable updated by the scheduler
 current_time = datetime.now().strftime("%H:%M")
 
 # In-memory config store
-config = {
+config: dict[str, Any] = {
     "lat": None,
     "lon": None,
     "weather_API": None,
@@ -16,14 +16,11 @@ config = {
 }
 
 
-def get_location():
-
-    # API request URL
+def fetch_location(city, state, country, weather_API):
     r = requests.get(
         f"http://api.openweathermap.org/geo/1.0/direct"
         f"?q={city},{state},{country}&limit=1&appid={weather_API}"
     )
-
     data = r.json()
     if not data:
         return None, None
@@ -31,24 +28,16 @@ def get_location():
     return city1["lat"], city1["lon"]
 
 
-def get_temp(lat, lon, weather_API):
-    r1 = requests.get(
+def get_weather_data(lat, lon, weather_API):
+    """Fetch temp and description in a single API call."""
+    r = requests.get(
         f"https://api.openweathermap.org/data/2.5/weather"
         f"?lat={lat}&lon={lon}&appid={weather_API}"
     )
-    data1 = r1.json()
-    temp1 = data1["main"]["temp"]
-    return temp1
-
-
-def get_weather(lat, lon, weather_API):
-    r1 = requests.get(
-        f"https://api.openweathermap.org/data/2.5/weather"
-        f"?lat={lat}&lon={lon}&appid={weather_API}"
-    )
-    data1 = r1.json()
-    weather = data1["weather"][0]["description"]
-    return weather
+    data = r.json()
+    temp = data["main"]["temp"]
+    description = data["weather"][0]["description"]
+    return temp, description
 
 
 # App and scheduler setup
@@ -63,39 +52,51 @@ def update_time():
     print(f"Scheduler tick: {current_time}")
 
 
+@scheduler.task('interval', id='update_weather', seconds=3600, misfire_grace_time=60)
+def update_weather():
+    if config["lat"] is not None:
+        config["temp"], config["weather"] = get_weather_data(
+            config["lat"], config["lon"], config["weather_API"]
+        )
+        print(f"Weather updated: {config['temp']}K, {config['weather']}")
+
+
 @app.route('/')
 def index():
     if config["lat"] is None:
         return redirect(url_for('setup'))
     return render_template(
-        'index.html', 
-        time_of_day=current_time
+        'index.html',
+        time_of_day=current_time,
         temp=config["temp"],
         weather=config["weather"],
     )
 
+
 @app.route('/setup', methods=['GET', 'POST'])
 def setup():
     error = None
-    if requests.method == 'POST':
+    if request.method == 'POST':
         city = request.form.get('city', '').strip()
         state = request.form.get('state', '').strip()
-        country = request.form.get('country', '')
-        weather_API = request.form.get('weather_api', '')
+        country = request.form.get('country', '').strip()
+        weather_API = request.form.get('weather_api', '').strip()
 
         if not all([city, state, country, weather_API]):
-            error = "All fields are required"
+            error = "All fields are required."
         else:
-            lat, lon = get_location(city, state, country, weather_API)
+            lat, lon = fetch_location(city, state, country, weather_API)
             if lat is None:
-                error = "Location not found. check your city, state, country and try again"
-                else:
-                    config["lat"] = lat
-                    config["lon"] = lon
-                    config["weather_API"] = weather_API
-                    config["temp"], config["weather"] = get_weather_data(lat,lon, weather_API)
-                    return redirect(url_for('index'))
+                error = "Location not found. Check your city/state/country and try again."
+            else:
+                config["lat"] = lat
+                config["lon"] = lon
+                config["weather_API"] = weather_API
+                config["temp"], config["weather"] = get_weather_data(lat, lon, weather_API)
+                return redirect(url_for('index'))
+
     return render_template('setup.html', error=error)
+
 
 if __name__ == '__main__':
     scheduler.init_app(app)

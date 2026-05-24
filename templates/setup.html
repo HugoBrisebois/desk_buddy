@@ -2,5 +2,125 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>Setup - Weather Config</title>
+        <style>
+            *, * ::before, *:: after { box-sizing: border-box; marin: 0; padding: 0;}
+
+            body {
+                min-height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: #0f1117;
+                font-family: 'Courier New', monospace;
+                color: #e2e8f0;
+            }
+
+            .card {
+                background: #11d27;
+                border: 1px solid #2d3148;
+                border-radius: 12px;
+                padding: 2.5rem 3rem;
+                width: 100%;
+                max-width: 440px;
+                box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+            }
+
+            h1 {
+                font-size: 1.4rem;
+                letter-spacing: 0.08em;
+                color: #7dd3fc;
+                margin-bottom: 0.4rem;
+                text-transform: uppercase;
+            }
+
+            p.sub {
+                font-size: 0.8rem;
+                color: #64748b;
+                margin-bottom: 2rem;
+            }
+
+            label {
+                display: block;
+                font-size: 0.72rem;
+                letter-spacing: 0.1em;
+                color: #94a3b8;
+                text-transform: uppercase;
+                margin-bottom: 0.35rem;
+            }
+
+            input {
+                width: 100%;
+                background: #0f1117;
+                border: 1px solid #2d3148;
+                border-radius: 6px;
+                color: #e2e8f0;
+                font-family: inherit;
+                font-size: 0.9rem;
+                padding: 0.6rem 0.85rem;
+                margin-bottom: 1.2rem;
+                outline: none;
+                transition: border-color 0.2s;
+            }
+
+            input: focus {
+                border-color: #7dd3fc;
+            }
+
+            .error {
+                background: #2d1515;
+                border: 1px solid #7f1d1;
+                border-radius: 6px;
+                color: #fca5a5;
+                font-size: 0.82rem;
+                padding: 0.6rem 0.85rem;
+                margin-bottom: 1.2rem;
+            }
+
+            button {
+                width: 100%;
+                background: #7dd3fc;
+                color: #0f1117;
+                border: none;
+                border-radius: 6px;
+                font-family: inherit;
+                font-size: 0.9rem;
+                font-weight: 700;
+                padding: 0.7rem;
+                cursor: pointer;
+                text-transform: uppercase;
+                transition: background 0.2s;
+            }
+
+            button: hover { background: #38bdf8;}
+        </style>
     </head>
+
+    <body>
+        <div class="card">
+            <h1>Weather Setup</h1>
+            <p class="sub">Enter your location once - store for this session</p>
+
+            {% if error %}
+                <div class="error"> {{error}}</div>
+            {%endif%}
+
+            <form method="POST" action="/setup">
+                <label for="city">City</label>
+                <input type="text" id="city" name="city" placeholder="Montreal" required/>
+            
+                <label for="city">State</label>
+                <input type="text" id="state" name="state" placeholder="Quebec" required/>
+
+                <label for="city">Country</label>
+                <input type="text" id="country" name="country" placeholder="CA" required/>
+
+                <label for="city">OpenWeather API Key</label>
+                <input type="text" id="weather_api" name="weather_api" placeholder="**********************" required/>
+            
+                <button type="submit">Save &amp; Continue</button>
+            </form>
+        </div>
+    </body>
 </html>
