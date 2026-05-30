@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <title>Setup - Weather Config</title>
         <style>
-            *, * ::before, *:: after { box-sizing: border-box; marin: 0; padding: 0;}
+            *, * ::before, *:: after { box-sizing: border-box; margin: 0; padding: 0;}
 
             body {
                 min-height: 100vh;
@@ -18,7 +18,7 @@
             }
 
             .card {
-                background: #11d27;
+                background: #1d2748;
                 border: 1px solid #2d3148;
                 border-radius: 12px;
                 padding: 2.5rem 3rem;
@@ -70,7 +70,7 @@
 
             .error {
                 background: #2d1515;
-                border: 1px solid #7f1d1;
+                border: 1px solid #7f1d1d;
                 border-radius: 6px;
                 color: #fca5a5;
                 font-size: 0.82rem;
@@ -104,7 +104,7 @@
 
             {% if error %}
                 <div class="error"> {{error}}</div>
-            {%endif%}
+            {% endif %}
 
             <form method="POST" action="/setup">
                 <label for="city">City</label>

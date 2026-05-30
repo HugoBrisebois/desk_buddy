@@ -30,7 +30,7 @@
                 const hh = String(now.getHours()).padStart(2, '0');
                 const mm = String(now.getMinutes()).padStart(2, '0');
                 document.getElementById('clock').textContent = hh + ':' + mm;
-                document.getElementById('date').textContent = now.toLocaleDaaString('en-US', {
+                document.getElementById('date').textContent = now.toLocaleDateString('en-US', {
                     weekday: 'long', month: 'long', day: 'numeric'
                 });
             }
