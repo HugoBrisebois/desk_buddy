@@ -1,21 +1,147 @@
+/*reset and base*/
+*, *::before, *::after{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/*design tokens*/
+:root {
+    --bg: #080c14;
+    --surface: rgba(255,255,255, 0.04);
+    --border: rgba(255,255,255,0.07);
+    --border-hover: rgba(255,255,255,0.13);
+    --text: #f2ede4;
+    --muted: rgba(242,237,228,0.38);
+    --gold: #e6b86a;
+    --ice: #80c8e8;
+    --font-serif: 'Cormorant Garamond', Georgia, serif;
+    --font-mont: 'Space Mono', 'Courier New', monospace;
+}
+
+/*body & background*/
 body {
-    color: black;
+    background-color: var(--bg);
+    color:var(--text);
+    font-family: var(--font-mont);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
 }
 
-.Time_Widget {
-    width: 500px;
-    text-align: center;
-    font-size: xx-large ;
-    background-color: rgb(228, 205, 162);
-    color: black;
-    border-radius: 10px;
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:radial-gradient(ellipse 70% 55% at 15% 15%, rgba(230, 184,106,0.07) 0%, transparent 55%),
+    radial-gradient(ellipse 55% 70% at 85% 85%, rgba(128,200,232,0.07) 0%, transparent 55%);
+    pointer-events: none;
 }
 
-.Weather_widget{
-    width: 500px;
-    text-align: center;
-    font-size: xx-large;
-    background-color: rgb(228,205,162);
-    color: black;
-    border-radius: 10px;
+/*dashboard container*/
+.dashboard {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1.23rem;
+    width: min(420px, 88vm)
+}
+
+/*card base*/
+.card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius:18px;
+    padding: 2rem 2.25rem;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter:blur(16px);
+    transition: border-color 0.3s ease;
+    opacity: 0;
+    transform: translateY(16px);
+    animation: rise 0.5s ease forwards;
+}
+
+.card:hover { border-color: var(--border-hover);}
+
+.card::before {
+    content:'';
+    position: absolute;
+    top: 0; left: 15%; right:15%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.11), transparent);
+}
+.weather_widget { animation-delay: 0.13;}
+
+/*corner glow accents*/
+.time_widget::after{
+    content: '';
+    position: absolute;
+    top: -50px; right: -50px;
+    width: 160px; height:160px;
+    background: radial-gradient(circle, rgba(320,284,106,0.14) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+}
+.weather_widget::after {
+        content: '';
+    position: absolute;
+    bottom: -50px; left: -50px;
+    width: 160px; height: 160px;
+    background: radial-gradient(circle, rgba(128, 200, 232, 0.13) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+/*time card*/
+#clock{
+    font-family: var(--font-serif);
+    font-size: clamp(0.95rem, 2.5vw, 1.1rem);
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: -0.04em;
+    line-height: 1;
+}
+
+#date{
+    font-family: var(--font-serif);
+    font-size: clamp(0.95rem, 2.5vw, 1.1rem);
+    font-style: italic;
+    font-weight: 300;
+    color: var(--muted);
+    margin-top: 0.5rem;
+    letter-spacing: 0.02em;
+}
+
+/* weather card*/
+.temp{
+    font-family: var(--font-mono);
+    font-size:clamp(2.8rem, 9vw, 3.8rem);
+    font-weight: 700;
+    color: var(--ice);
+    letter-spacing: -0.04em;
+    line-height: 1;
+}
+
+.condition {
+    font-family:var(--font-serif);
+    font-size: clamp(1.05rem, 3vw, 1.25rem);
+    font-style: italic;
+    font-weight:300;
+    color: var(--muted);
+    margin-top: 0.5rem;
+    letter-spacing: 0.02em;
+}
+
+/*animations*/
+@keyframes rise{
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/*responsive*/
+@media (max-width: 400px){
+    .card {padding: 1.5rem 1.6rem;}
 }

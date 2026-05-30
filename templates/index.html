@@ -4,18 +4,39 @@
         <link rel="stylesheet" href="/static/style.css" />
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Dashboard</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,300&family=Space+MONO:wght@400;700&display=swap" rel="stylesheet">
     </head>
 
     <body>
-        <div class="Time_Widget">
-            <h1> {{time_of_day}} </h1>
+
+        <div class="dashboard">
+            <div class="Time_Widget card">
+                <h1 id="clock">--:--</h1>
+                <p id="date"></p>
+            </div>
+    
+            <div class="Weather_widget">
+                <h1 class temp> {{temp}} </h1>
+                <br>
+                <h2 class="condition"> {{weather}} </h2>
+            </div>
         </div>
 
-        <div class="Weather_widget">
-            <h1> {{temp}} </h1>
-            <br>
-            <h2> {{weather}} </h2>
-        </div>
+        <script>
+            function tick() {
+                const now = new Date();
+                const hh = String(now.getHours()).padStart(2, '0');
+                const mm = String(now.getMinutes()).padStart(2, '0');
+                document.getElementById('clock').textContent = hh + ':' + mm;
+                document.getElementById('date').textContent = now.toLocaleDaaString('en-US', {
+                    weekday: 'long', month: 'long', day: 'numeric'
+                });
+            }
+            tick();
+            setInterval(tick, 1000)
+        </script>
     </body>
 
 </html>

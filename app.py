@@ -1,5 +1,5 @@
 from datetime import datetime
-from flask_apscheduler import APScheduler
+import time
 from flask import Flask, render_template, request, redirect, url_for
 import requests
 from typing import Any
@@ -39,6 +39,7 @@ def get_weather_data(lat, lon, weather_API):
     # get the temperature data and convert it to celsius
     temp = data["main"]["temp"]
     temp1 = temp - 273.15
+    
     # get the Weather data
     description = data["weather"][0]["description"]
     
@@ -47,17 +48,14 @@ def get_weather_data(lat, lon, weather_API):
 
 # App and scheduler setup
 app = Flask(__name__)
-scheduler = APScheduler()
 
-
-@scheduler.task('interval', id='update_time', seconds=30, misfire_grace_time=30)
+# functions to update display data
 def update_time():
     global current_time
     current_time = datetime.now().strftime("%H:%M")
     print(f"Scheduler tick: {current_time}")
 
 # update scheduler for updating weather data
-@scheduler.task('interval', id='update_weather', seconds=3600, misfire_grace_time=60)
 def update_weather():
     if config["lat"] is not None:
         config["temp"], config["weather"] = get_weather_data(
@@ -102,8 +100,5 @@ def setup():
 
     return render_template('setup.html', error=error)
 
-
 if __name__ == '__main__':
-    scheduler.init_app(app)
-    scheduler.start()
     app.run(debug=True)
