@@ -35,9 +35,14 @@ def get_weather_data(lat, lon, weather_API):
         f"?lat={lat}&lon={lon}&appid={weather_API}"
     )
     data = r.json()
+    
+    # get the temperature data and convert it to celsius
     temp = data["main"]["temp"]
+    temp1 = temp - 273.15
+    # get the Weather data
     description = data["weather"][0]["description"]
-    return temp, description
+    
+    return temp1, description
 
 
 # App and scheduler setup
@@ -51,7 +56,7 @@ def update_time():
     current_time = datetime.now().strftime("%H:%M")
     print(f"Scheduler tick: {current_time}")
 
-
+# update scheduler for updating weather data
 @scheduler.task('interval', id='update_weather', seconds=3600, misfire_grace_time=60)
 def update_weather():
     if config["lat"] is not None:

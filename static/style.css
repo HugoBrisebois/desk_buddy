@@ -6,7 +6,16 @@ body {
     width: 500px;
     text-align: center;
     font-size: xx-large ;
-    background-color: rgb(233, 219, 193);
+    background-color: rgb(228, 205, 162);
+    color: black;
+    border-radius: 10px;
+}
+
+.Weather_widget{
+    width: 500px;
+    text-align: center;
+    font-size: xx-large;
+    background-color: rgb(228,205,162);
     color: black;
     border-radius: 10px;
 }
