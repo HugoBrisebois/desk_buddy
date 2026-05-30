@@ -1,5 +1,4 @@
 from datetime import datetime
-import time
 from flask import Flask, render_template, request, redirect, url_for
 import requests
 from typing import Any
