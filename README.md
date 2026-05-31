@@ -6,5 +6,8 @@ this is a simple web dashboard prime for customization and ready to be deployed 
 - python
 - html/css
 
+# default weather report location
+location is set to Montreal, Quebec, Canada
+
 ### disclaimer
 i did use ai to help with deployment to vercel and for styling of the app
