@@ -9,5 +9,11 @@ this is a simple web dashboard prime for customization and ready to be deployed 
 # default weather report location
 location is set to Montreal, Quebec, Canada
 
+### OpenWeather API
+for trial use ONLY use this api key:
+```
+29496e4dee3816490d136a80ac85f63d
+```
+
 ### disclaimer
 i did use ai to help with deployment to vercel and for styling of the app
